@@ -1,5 +1,7 @@
 from typing import Optional
 
+import dateutil.parser as dp
+
 import re
 import sys
 
@@ -7,16 +9,42 @@ from google.protobuf.json_format import Parse
 from is_wire.core import Logger, AsyncTransport
 from opencensus.ext.zipkin.trace_exporter import ZipkinExporter
 
-from is_person_detector.conf.options_pb2 import PersonDetectorOptions
+from is_msgs.image_pb2 import Image
 
+import cv2
+import numpy as np
 
 def get_topic_id(topic: str) -> str: # type: ignore[return]
     re_topic = re.compile(r"CameraGateway.(\d+).Frame")
     result = re_topic.match(topic)
     if result:
         return result.group(1)
+    
+def span_duration_ms(span) -> float:
+    dt = dp.parse(span.end_time) - dp.parse(span.start_time)
+    return dt.total_seconds() * 1000.0
 
+    
+def to_np(input_image):
+    if isinstance(input_image, np.ndarray):
+        output_image = input_image
+    elif isinstance(input_image, Image):
+        buffer = np.frombuffer(input_image.data, dtype=np.uint8)
+        output_image = cv2.imdecode(buffer, flags=cv2.IMREAD_COLOR)
+    else:
+        output_image = np.array([], dtype=np.uint8)
+    return output_image
 
+def to_image(image, encode_format: str = ".jpeg", compression_level: float = 0.8, ) -> Image:
+    if encode_format == ".jpeg":
+        params = [cv2.IMWRITE_JPEG_QUALITY, int(compression_level * (100 - 0) + 0)]
+    elif encode_format == ".png":
+        params = [cv2.IMWRITE_PNG_COMPRESSION, int(compression_level * (9 - 0) + 0)]
+    else:
+        return Image()
+    cimage = cv2.imencode(ext=encode_format, img=image, params=params)
+    return Image(data=cimage[1].tobytes())
+    
 def create_exporter(service_name: str, uri: str, log: Logger) -> ZipkinExporter:
     zipkin_ok = re.match("http:\\/\\/([a-zA-Z0-9\\.]+)(:(\\d+))?", uri)
     if not zipkin_ok:
@@ -28,17 +56,3 @@ def create_exporter(service_name: str, uri: str, log: Logger) -> ZipkinExporter:
         transport=AsyncTransport,
     )
     return exporter
-
-
-def load_options(log: Logger) -> FaceDetectorOptions: # type: ignore[return]
-    op_file = sys.argv[1] if len(sys.argv) > 1 else "options.json"
-    try:
-        with open(op_file, "r") as f:
-            try:
-                op = Parse(f.read(), FaceDetectorOptions())
-                log.info("PersonDetectorOptions: \n{}", op)
-                return op
-            except Exception as ex:
-                log.critical("Unable to load options from '{}'. \n{}", op_file, ex)
-    except Exception:
-        log.critical("Unable to open file '{}'", op_file)
