@@ -15,7 +15,7 @@ Channels = int
 class personDetector:
     def __init__(self):
         self.model = YOLO('./model/yolov8s.pt')
-        
+        self.model.to('cuda')
     @staticmethod
     def bounding_box(image, annotations: ObjectAnnotations):
         for obj in annotations.objects:
@@ -30,7 +30,7 @@ class personDetector:
     def to_object_annotations(results, image_shape,) -> ObjectAnnotations:
             annotations = ObjectAnnotations()
             for det in results:
-                bounding_box = det[0:4].astype(np.int32)
+                bounding_box = det[0:4].cpu().numpy().astype(np.int32)
                 item = annotations.objects.add()
                 vertex_1 = item.region.vertices.add()
                 vertex_1.x = bounding_box[0]
