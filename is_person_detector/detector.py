@@ -36,8 +36,8 @@ class personDetector:
                 vertex_1.x = bounding_box[0]
                 vertex_1.y = bounding_box[1]
                 vertex_2 = item.region.vertices.add()
-                vertex_2.x = bounding_box[0] + bounding_box[2]
-                vertex_2.y = bounding_box[1] + bounding_box[3]
+                vertex_2.x = bounding_box[2]
+                vertex_2.y = bounding_box[3]
                 item.label = "person"
                 item.score = det[-1]
             annotations.resolution.width = image_shape[1]
