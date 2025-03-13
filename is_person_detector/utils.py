@@ -3,7 +3,6 @@ from typing import Optional
 import dateutil.parser as dp
 
 import re
-import sys
 
 from google.protobuf.json_format import Parse
 from is_wire.core import Logger, AsyncTransport
