@@ -92,7 +92,6 @@ def main() -> None:
 
             rendered_msg.pack(to_image(image_with_bounding))
             rendered_msg.created_at = time.time()
-            print(rendered_msg.created_at)
             channel.publish(rendered_msg)
 
         span.add_attribute('Detections', len(detections[0].boxes))
