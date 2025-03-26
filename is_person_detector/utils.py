@@ -55,3 +55,20 @@ def create_exporter(service_name: str, uri: str, log: Logger) -> ZipkinExporter:
         transport=AsyncTransport,
     )
     return exporter
+
+def msg_commtrace(msg: str, timestamp_rcvd: float):
+    if msg.metadata != {}:
+
+        msg_to_commtrace = (
+            f'{{"timestamp_send": "{int(msg.created_at*1000000)}", '
+            f'"timestamp_rcvd": "{int(timestamp_rcvd*1000000)}", '
+            f'"x-b3-flags": "{msg.metadata["x-b3-flags"]}", '
+            f'"x-b3-parentspanid": "{msg.metadata["x-b3-parentspanid"]}", '
+            f'"x-b3-sampled": "{msg.metadata["x-b3-sampled"]}", '
+            f'"x-b3-spanid": "{msg.metadata["x-b3-spanid"]}", '
+            f'"x-b3-traceid": "{msg.metadata["x-b3-traceid"]}", '
+            f'"spanname": "frame"}}'
+        )
+        bytesToSend = str.encode(msg_to_commtrace)
+
+        return (bytesToSend, msg_to_commtrace)
