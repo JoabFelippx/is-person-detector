@@ -7,7 +7,7 @@ To run the application into kubernetes platform, it must be packaged in the righ
 To be available to the kubernetes cluster, the docker image must be stored on [dockerhub](https://hub.docker.com/), to build the image locally and push to dockerhub:
 
 ```bash
-docker build -f etc/docker/Dockerfile -t <user>/is-face-detector:<version> .
+docker build -f etc/docker/Dockerfile -t <user>/is-person-detector:<version> .
 docker push <user>/is-face-detector:<version>
 ```
 
