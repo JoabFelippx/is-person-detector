@@ -1,7 +1,6 @@
 # Person Detector Service
 
-In a simplified manner, a service within the Intelligent Space is essentially a Python (or C++, and so on) application running within a Docker container, seamlessly orchestrated across a cluster of hosts using Kubernetes. This service detects faces in images, providing these detections in different ways.
-
+This service detects faces in images, providing these detections in different ways.
 
 ## About :smile:
 
