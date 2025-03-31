@@ -14,8 +14,8 @@ A stream is a program that consumes messages with a specific topic, processes th
 
 | Name | ⇒ Input | Output  ⇒ | Description |
 | ---- | ------- | --------- | ----------- |
-| Person.Detection | :incoming_envelope: **topic:** `CameraGateway.(camera_id).Frame` <br> :gem: **schema:** [Image] | :incoming_envelope: **topic:**  `PersonDetector.(camera_id).Detection` <br> :gem: **schema:** [ObjectAnnotations] | Detects face on images published by cameras and publishes an ObjectAnnotations message containing all the detected faces. |
-| Person.Detection | :incoming_envelope: **topic:** `CameraGateway.(camera_id).Frame` <br> :gem: **schema:** [Image]| :incoming_envelope: **topic:** `PersonDetector.(camera_id).Rendered` <br> :gem: **schema:** [Image]| After detection, faces are drew on input image and published for visualization.|
+| Person.Detection | :incoming_envelope: **topic:** `CameraGateway.(camera_id).Frame` <br> :gem: **schema:** [Image] | :incoming_envelope: **topic:**  `PersonDetector.(camera_id).Detection` <br> :gem: **schema:** [ObjectAnnotations] | Detects person on images published by cameras and publishes an ObjectAnnotations message containing all the detected persons. |
+| Person.Detection | :incoming_envelope: **topic:** `CameraGateway.(camera_id).Frame` <br> :gem: **schema:** [Image]| :incoming_envelope: **topic:** `PersonDetector.(camera_id).Rendered` <br> :gem: **schema:** [Image]| After detection, persons are drew on input image and published for visualization.|
 
 ## Configuration :gear:
 
