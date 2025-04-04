@@ -1,6 +1,6 @@
 # Person Detector Service
 
-This service detects faces in images, providing these detections in different ways.
+This service detects person in images, providing these detections in different ways.
 
 ## About :smile:
 
