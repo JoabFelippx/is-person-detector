@@ -6,7 +6,6 @@ This service detects faces in images, providing these detections in different wa
 
 > YOLOv8 was released by Ultralytics on January 10th, 2023, offering cutting-edge performance in terms of accuracy and speed. Building upon the advancements of previous YOLO versions, YOLOv8 introduced new features and optimizations that make it an ideal choice for various object detection tasks in a wide range of applications. [See more](https://docs.ultralytics.com/models/yolov8/)
 
-Model: [`etc/model/download_models.sh`](https://github.com/labvisio/is-face-detector/blob/master/etc/model/download_models.sh).
 
 ## Streams :camera:
 
